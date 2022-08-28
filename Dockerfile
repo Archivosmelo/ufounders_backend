@@ -4,7 +4,7 @@ FROM node:18-alpine3.15 AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # Build the app with cache dependencies
 FROM node:18-alpine3.15 AS builder
