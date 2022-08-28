@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  
+
   const PORT = configService.get<number>('port');
 
   app.setGlobalPrefix('api');
@@ -18,12 +18,14 @@ async function bootstrap() {
   app.useGlobalPipes(
 
     new ValidationPipe({
+
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
       transformOptions: {
         enableImplicitConversion: true // Gracias stackoverflow
       }
+      
     })
 
   );
