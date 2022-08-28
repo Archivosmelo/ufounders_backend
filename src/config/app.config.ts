@@ -4,7 +4,7 @@ export const EnvConfiguration = () => ({
     mongodb: process.env.MONGODB_DATABASE,
     connection: process.env.MONGODB,
     connectionLocal: process.env.MONGODB_LOCAL,
-    port: process.env.PORT || 8000,
+    port: process.env.PORT,
     defaultLimit: +process.env.DEFAULT_LIMIT || 30
 
 })
