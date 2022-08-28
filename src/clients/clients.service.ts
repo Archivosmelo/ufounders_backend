@@ -1,13 +1,13 @@
-import { 
-  BadRequestException, 
-  Injectable, 
-  InternalServerErrorException, 
-  NotFoundException 
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { CreateClientDto } from './dto/create-client.dto';
 import { Client } from './entities/client.entity';
 
@@ -20,10 +20,10 @@ export class ClientsService {
 
     @InjectModel(Client.name)
     private readonly clientModel: Model<Client>,
-    
+
     private readonly configService: ConfigService
 
-  ) { 
+  ) {
 
     this.defaultLimit = this.configService.get<number>('defaultLimit')
 
@@ -49,9 +49,9 @@ export class ClientsService {
 
   async findAll(paginationDto: PaginationDto) {
 
-    const { 
+    const {
       limit = this.defaultLimit,
-      offset = 0 
+      offset = 0
     } = paginationDto
 
     const clients = await this.clientModel

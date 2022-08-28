@@ -4,10 +4,9 @@ import {
   InternalServerErrorException,
   UnauthorizedException
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt'
-
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { LoginUserDto, CreateUserDto } from './dto';
 import { User } from './entities/user.entity';
 import { JwtPayload } from './interfaces/jwt.payload.interface';
@@ -17,8 +16,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
 
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+
+    @InjectModel(User.name)
+    private readonly userModel: Model<User>,
 
     private readonly jwtService: JwtService
 
@@ -30,12 +30,11 @@ export class AuthService {
 
       const { password } = createUserDto
 
-      const user = await this.userRepository.create({
+      const user = await this.userModel.create({
         ...createUserDto,
         password: bcrypt.hashSync(password, 10)
       })
 
-      await this.userRepository.save(user)
       delete user.password
 
       return {
@@ -54,10 +53,7 @@ export class AuthService {
 
     const { password, email } = loginUserDto
 
-    const user = await this.userRepository.findOne({
-      where: { email },
-      select: { email: true, password: true }
-    })
+    const user = await this.userModel.findOne({ email })
 
     if (!user) {
       throw new UnauthorizedException("Credentials not valid")

@@ -5,7 +5,6 @@ import { ClientsModule } from './clients/clients.module';
 import { SeedModule } from './seed/seed.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvConfiguration } from './config/app.config';
 import { JoiValidationSchema } from './config/joi.validation';
 
@@ -17,14 +16,6 @@ import { JoiValidationSchema } from './config/joi.validation';
     }),
     ClientsModule,
     MongooseModule.forRoot(process.env.MONGODB),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: process.env.MONGODB,
-      database: process.env.MONGODB_DATABASE,
-      useUnifiedTopology: true,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
     SeedModule,
     CommonModule,
     AuthModule

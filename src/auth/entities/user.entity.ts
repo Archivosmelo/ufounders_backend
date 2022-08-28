@@ -1,31 +1,26 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose'
 
-@Entity('users')
-export class User {
+enum Role {
+    user, //or User = "user",
+    admin, // or Admin = "admin",
+  }
 
-    @ObjectIdColumn()
-    _id: string;
+@Schema()
+export class User extends Document {
 
-    @PrimaryColumn()
-    id: string; // TypeORM needs this for mongo to differenciate from _id
-
-    @Column()
+    @Prop({ unique: true, index: true })
     username: string;
 
-    @Column('text', {
-        unique: true
-    })
+    @Prop({ unique: true, index: true })
     email: string;
 
-    @Column('text', {
-        select: false
-    })
+    @Prop()
     password: string;
 
-    @Column('text', {
-        array: true,
-        default: ['user']
-    })
-    roles: string[];
+    @Prop()
+    roles: Role;
 
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);

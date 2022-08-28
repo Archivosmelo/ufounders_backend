@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { InjectRepository } from "@nestjs/typeorm";
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { Strategy, ExtractJwt } from 'passport-jwt'
-import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { JwtPayload } from "../interfaces/jwt.payload.interface";
 
@@ -11,8 +11,8 @@ import { JwtPayload } from "../interfaces/jwt.payload.interface";
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
     constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
+        @InjectModel(User.name)
+        private readonly usertModel: Model<User>,
 
         configService: ConfigService
     ) {
@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         const { id } = payload
 
-        const user = await this.userRepository.findOneBy({ id: id })
+        const user = await this.usertModel.findById(id)
 
         // This validation runs on AuthGuards() because of the passport strategy
         if (!user) throw new UnauthorizedException("Token not valid")

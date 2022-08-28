@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Client } from 'src/clients/entities/client.entity';
+import { Client } from '../clients/entities/client.entity';
 import { Client as ClientInterface } from './interfaces/client-response.interface';
-import { AxiosAdapter } from 'src/common/adapters/axios.adapter';
+import { AxiosAdapter } from '../common/adapters/axios.adapter';
 
 @Injectable()
 export class SeedService {
