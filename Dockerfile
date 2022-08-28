@@ -19,7 +19,7 @@ RUN npm run build
 FROM node:18-alpine3.15 AS runner
 
 WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install --prod --legacy-peer-deps
 COPY --from=builder /app/dist ./dist
 
